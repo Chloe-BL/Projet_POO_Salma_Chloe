@@ -1,3 +1,10 @@
+#include <iostream>
+using namespace std;
+
+#include "Grille.h"
+#include <SFML/Graphics.hpp>
+
+
 class Afficheur {
     public:
         virtual void afficher ( Grille *grille ) = 0;
