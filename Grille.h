@@ -1,4 +1,5 @@
 #pragma once
+#include <map>
 #include <vector>
 #include <iostream>
 using namespace std;
@@ -27,8 +28,8 @@ public:
         return hauteur;
     }
 
-    Cellule getCellule(int x, int y) { // retourne la cellule aux coordonnées x et y 
-        
+    Cellule* getCellule(int i, int j) { // retourne la cellule aux coordonnées x et y 
+        return this -> cellules[i][j];
     }
 
     void initialiserDepuisMatrice (vector<vector<bool>> matrice) { //Remplit la grille à partir du fichier d'entrée
@@ -60,11 +61,43 @@ public:
 
 class GrilleNormale : public Grille {
 public:
-    int compterVoisinsVivants(int x, int y) override { 
+    int compterVoisinsVivants(int i, int j) override { 
 
+        map <Cellule*, bool> Voisins ;
+
+        // insertion dans la liste, de l'ensemble des voisins à une cellule donnée
+
+        // Les 3 cases du haut
+        Voisins.insert({getCellule(i-1,j-1), getCellule(i-1, j-1) -> estVivante() });
+        Voisins.insert({getCellule(i-1,j), getCellule(i-1, j) -> estVivante() });
+        Voisins.insert({getCellule(i-1,j+1), getCellule(i-1, j+1) -> estVivante() });
+
+        // Les 2 cases des côtés
+        Voisins.insert({getCellule(i,j-1), getCellule(i, j-1) -> estVivante() });
+        Voisins.insert({getCellule(i,j+1), getCellule(i, j+1) -> estVivante() });
+
+        // Les 3 cases d'en dessous
+        Voisins.insert({getCellule(i+1,j-1), getCellule(i+1, j-1) -> estVivante() });
+        Voisins.insert({getCellule(i+1,j), getCellule(i+1, j) -> estVivante() });
+        Voisins.insert({getCellule(i+1,j+1), getCellule(i+1, j+1) -> estVivante() });
+
+        // Recherche du nombre de voisins vivants
+        int cpt = 0;
+
+        for (auto& l : Voisins) {
+            if (l.second){
+                cpt++;
+            }
+            else {
+                cpt = cpt;
+            }
+        }
+
+        return cpt;
     }
 
     void calculerGenerationSuivante() override { 
+        
     }
 };
 
