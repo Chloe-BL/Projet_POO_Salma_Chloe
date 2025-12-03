@@ -11,7 +11,11 @@ private:
     int largeur;
     int hauteur;
 public:
-    Grille (int l, int h) : largeur(l), hauteur(h) {} // constrcteur
+    Grille (int l, int h) : largeur(l), hauteur(h) {
+    cellules = vector<vector<Cellule*>> // création de la matrice de taille hauteur (lignes) x largeur (colonnes)
+              (hauteur, // matrice avec "hauteur" nbr de lignes
+              vector<Cellule*> (largeur, nullptr)); // largeur = le nombre de colonnes, contenant la valeur NULL
+    }
     
     int getLargeur(){
         this -> largeur = largeur;
@@ -27,13 +31,28 @@ public:
         
     }
 
-    void initialiserDepuisMatrice (vector<vector<bool>>matrice) { //Remplit la grille à partir du fichier d'entrée
+    void initialiserDepuisMatrice (vector<vector<bool>> matrice) { //Remplit la grille à partir du fichier d'entrée
+       
+        for (int i = 0; i < hauteur ; i++) {
+            for (int j = 0; j < largeur; j++) {
 
+                // matrice initiale donnée dans le fichier 
+                bool etatDeLaCellule = matrice[i][j];
+
+                if (etatDeLaCellule){
+                    cellules[i][j] = new Cellule( j, i, new EtatVivant());
+                }
+            
+                else {
+                    cellules[i][j] = new Cellule( j, i, new EtatMort());
+                }
+            }
+        }
     }
 
-    virtual int compterVoisinsVivants(int x, int y) = 0 ; // retourne le nombre de voisins vivants autour d'une cellule
-    virtual void calculerGenerationSuivante() = 0 ; // parcourt la grille et calcule pour chaque cellules, leur prochain état (stocker dans etatSuivant)
-    
+    virtual int compterVoisinsVivants(int x, int y); // retourne le nombre de voisins vivants autour d'une cellule
+    virtual void calculerGenerationSuivante(); // parcourt la grille et calcule pour chaque cellules, leur prochain état (stocker dans etatSuivant)
+
     void appliquerGenerationSuivante() {
 
     }
