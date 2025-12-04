@@ -59,16 +59,3 @@ public:
         }
     }
 };
-
-/*
-class GrilleTorique : public Grille {
-public :
-    int compterVoisinsVivants(int x, int y) override {
-
-    }
-
-    void calculerGenerationSuivante() override {
-
-    }
-};
-*/

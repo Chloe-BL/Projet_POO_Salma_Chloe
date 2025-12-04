@@ -1,5 +1,7 @@
 #include <iostream>
 #include <vector>
+#include <limits>
+
 
 #include "GrilleNormale.h"
 #include "RegleConway.h"
@@ -15,9 +17,9 @@ using namespace std;
 int main() {
 
 
-    string nomFichier;
-    cout << "Nom du fichier contenant la grille : ";
-    cin >> nomFichier;
+    string chemin;
+    cout << "Chemin du fichier contenant la grille : ";
+    getline(std::cin, chemin);
 
     
 
@@ -32,7 +34,7 @@ int main() {
     vector<vector<bool>> matrice;
     Fichier f;
 
-    if (!f.lireMatrice(nomFichier, matrice)) {
+    if (!f.lireMatrice(chemin, matrice)) {
         cout << "Erreur fichier" << endl;
         return 1;
     }
@@ -62,7 +64,7 @@ int main() {
     // Création du JeuDeLaVie
     JeuDeLaVie jeu(grille, regle, afficheur); 
 
-    jeu.initialiserGrilleDepuisFichier(nomFichier);
+    jeu.initialiserGrilleDepuisFichier(chemin);
 
     if (choixMode == 1) {
         int iterations;

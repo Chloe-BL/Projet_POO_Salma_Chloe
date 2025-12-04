@@ -12,9 +12,10 @@ class JeuDeLaVie {
         int nombreIterations;
         int cpt;
     public:
+
         // Constructeur pour initialiser la grille, la règle et l'afficheur
-        JeuDeLaVie(Grille* g, Regle* r, Afficheur* a) 
-    : grille(g), regle(r), afficheur(a), nombreIterations(0) {}
+        JeuDeLaVie(Grille* g, Regle* r, Afficheur* a) : grille(g), regle(r), afficheur(a), nombreIterations(0) {}
+
         // initialiser la grille a partir d'un fichier
         void initialiserGrilleDepuisFichier(const std::string& nomFichier) {
             Fichier fichier;
@@ -26,23 +27,62 @@ class JeuDeLaVie {
             }
         }
 
-        // executer le jeu en mode console
-        void executer(int iterations) {
-            for (int i = 0; i < iterations; ++i) {
-                cout << "Generation n°" << i << endl;
-                afficheur->afficher(grille);
-                sauvegarderGeneration(i);
-                grille->calculerGenerationSuivante();
-                grille->appliquerGenerationSuivante();
+
+    bool estStable() {
+
+        int H = grille->getHauteur();
+        int L = grille->getLargeur();
+
+        // Tableau d'état avant 
+        std::vector<std::vector<bool>> etatAvant(H, std::vector<bool>(L));
+
+        // Copier la grille
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < L; j++) {
+                etatAvant[i][j] = grille->getCellule(i,j)->estVivante();
             }
         }
+
+        // Calculer la génération suivante
+        grille->calculerGenerationSuivante();
+        grille->appliquerGenerationSuivante();
+
+        // Comparer
+        for (int i = 0; i < H; i++) {
+            for (int j = 0; j < L; j++) {
+                if (etatAvant[i][j] != grille->getCellule(i,j)->estVivante()) {
+                    return false;
+                }
+            }
+        }
+
+        return true; // identique
+    }
+
+
+        // executer le jeu en mode console
+        void executer(int iterations) {
+
+            for (int i = 0; i < iterations; ++i) {
+
+                cout << "Generation n°" << i+1 << endl;
+                afficheur->afficher(grille);
+                sauvegarderGeneration(i);
+
+                // Vérifier stabilité APRES avoir montré la génération actuelle
+                if (estStable()) {
+                    cout << "La grille est stable. Arrêt à la génération " << i+1 << endl;
+                    break;
+                }
+            }
+        }
+
 
         // mode graphique
         void executerGraphique() {
             afficheur->afficher(grille);
             return;
         }
-
 
 
     // Sauvegarder la grille dans un fichier
@@ -60,7 +100,7 @@ class JeuDeLaVie {
     }
 
     void sauvegarderGeneration(int numero) {
-        string nom = "Etats/generation_" + to_string(numero) + ".txt";
+        string nom = "Etats/generation_" + to_string(numero+1) + ".txt";
         cout << "Sauvegarde de : " << nom << endl;
         sauvegarderDansFichier(nom);
     }
