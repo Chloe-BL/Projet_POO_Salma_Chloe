@@ -6,6 +6,6 @@ class Grille;
 
 class Afficheur {
     public:
-        virtual void afficher ( Grille *grille ) = 0;
+        virtual void afficher ( Grille *grille) = 0;
         virtual ~Afficheur() {}
 };

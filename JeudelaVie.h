@@ -1,4 +1,8 @@
 #pragma once
+
+#include <chrono>
+#include <thread>
+
 #include "Grille.h"
 #include "Regle.h"
 #include "Afficheur.h"
@@ -64,8 +68,10 @@ class JeuDeLaVie {
         void executer(int iterations) {
 
             for (int i = 0; i < iterations; ++i) {
+                system("clear");
 
-                cout << "Generation n°" << i+1 << endl;
+                cout << "\nGénération n°" << i+1 << endl;
+                
                 afficheur->afficher(grille);
                 sauvegarderGeneration(i);
 
@@ -74,6 +80,7 @@ class JeuDeLaVie {
                     cout << "La grille est stable. Arrêt à la génération " << i+1 << endl;
                     break;
                 }
+                this_thread::sleep_for(chrono::milliseconds(500));
             }
         }
 

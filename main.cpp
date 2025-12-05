@@ -21,6 +21,13 @@ int main() {
     cout << "Chemin du fichier contenant la grille : ";
     getline(std::cin, chemin);
 
+    //pour accepter le chemin sous Linux
+    for (char& c : chemin) {
+        if (c == '\\'){
+            c = '/';
+        } 
+    }
+
     
 
     int choixMode;

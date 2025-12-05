@@ -7,10 +7,7 @@ using namespace std;
 
 class AfficheurConsole : public Afficheur {
     public:
-        void afficher ( Grille *grille ) override {
-
-            std::cout << "\033[2J\033[H"; //déplacer le curseur
-
+        void afficher ( Grille *grille) override {
 
             for (int i = 0; i < grille->getHauteur(); ++i) {
                 for (int j = 0; j < grille->getLargeur(); ++j) {
